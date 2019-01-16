@@ -16,9 +16,9 @@ Github Authenticator is supported by Identity Server 5.1.0 upwards.
 
 * [Configuring the identity provider](#Configuring-the-identity-provider)
 
-* Configuring the service provider
+* [Configuring the service provider](Configuring the service provider)
 
-* Testing the sample
+* [Testing the sample](#Testing-the-sample)
 
 ## Deploying Github artifacts
 
