@@ -20,6 +20,13 @@ Github Authenticator is supported by Identity Server 5.1.0 upwards.
 
 * [Testing the sample](#Testing-the-sample)
 
+## Compatibility 
+
+| version  | Supported WSO2 IS versions |
+| ------------- | ------------- |
+| 1.0.0| 5.1.0, 5.2.0, 5.3.0, 5.4.1, 5.4.0, 5.5.0, 5.7.0    |
+| 1.0.1| 5.1.0, 5.2.0, 5.3.0, 5.4.1, 5.4.0, 5.5.0, 5.7.0    |
+
 ## Deploying Github artifacts
 
 * Either Download the artifacts for this authenticator from [the store](https://store.wso2.com/store/assets/isconnector/details/bfed96a9-0d79-4770-9c55-22378d3a2812) or [build the project](Building From the Source) to get the jar and by adding it in the <IS-Home>/repository/components/dropins directory.
