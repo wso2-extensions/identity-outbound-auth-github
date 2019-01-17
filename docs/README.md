@@ -1,6 +1,7 @@
 # Github Authenticator
 
 The Github authenticator allows you to authenticate a user using Github through the WSO2 Identity Server. Github is a web-based hosting service for software development projects that facilitates powerful collaboration, code review, and code management for open source and private software development projects.
+![1](images/github.png "github.png")
 
 This page provides instructions on how to configure the Github authenticator and Identity Server using a sample app. You can find more information in the following sections.
 
@@ -48,10 +49,10 @@ Follow the steps given below to build the Salesforce EI Inbound Endpoint from th
 
 1. GO to [Github](https://www.github.com/) and create a github account.
 2. Register your app at [here](https://github.com/settings/applications/new).
-    ![1](images/registerGithubApp.png "registerGithubApp.png")
+    ![2](images/registerGithubApp.png "registerGithubApp.png")
 3. Use https://localhost:9443/commonauth as the authorization callback URL when you register the client.
 4. Now you can get the clientId and clientSecret of your created app.
-![2](images/register.png "register.png")
+![3](images/register.png "register.png")
 
 ## Deploying travelocity.com sample app
 
@@ -120,7 +121,7 @@ Now you have to configure WSO2 Identity Server by [adding a new identity provide
 * In the `Identity Providers` section under the `Main` tab of the management console, click `Add`.
 
 * Give a suitable name for `Identity Provider Name`.
-![3](images/GithubIdentityProvider.png "GithubIdentityProvider.png")
+![4](images/GithubIdentityProvider.png "GithubIdentityProvider.png")
 
 * Navigate to `Github Configuration` under `Federated Authenticators`. 
 
@@ -167,14 +168,14 @@ The next step is to configure the service provider.
     3. Enable Attribute Profile.
     4. Include Attributes in the Response Always.
 
-   ![3](images/Travelocity-Service-Provider.png "Travelocity-Service-Provider.png")
+   ![5](images/Travelocity-Service-Provider.png "Travelocity-Service-Provider.png")
    
 7. Click `Update` to save the changes. Now you will be sent back to the `Service Providers` page.
 
 8. Navigate to the Local and `Outbound Authentication Configuration` section.
  
 9. Select the identity provider you created from the drop-down list under `Federated Authentication`.
-![3](images/GithubServiceProvider.png "GithubServiceProvider.png")
+![6](images/GithubServiceProvider.png "GithubServiceProvider.png")
 
 10. Ensure that the `Federated Authentication` radio button is selected and click  `Update` to save the changes. 
 
@@ -185,10 +186,10 @@ You have now added and configured the service provider.
 1. To test the sample, go to the following URL: http://<TOMCAT_HOST>:<TOMCAT_PORT>/travelocity.com/index.jsp. E.g., http://localhost:8080/travelocity.com
 
 2. Login with SAML from the WSO2 Identity Server.
-![3](images/Travelocity.jpeg "Travelocity.jpeg")
+![7](images/Travelocity.jpeg "Travelocity.jpeg")
 
     If you checkout from tag v5.7.0 when you downloading the sample then login with SAML(Redirect binding).
-    ![4](images/travelocity5.7.0.png "Travelocity.png")
+    ![8](images/travelocity5.7.0.png "Travelocity.png")
 
 3. Enter your Github credentials in the prompted login page of Github. Once you log in successfully you will be taken to the home page of the travelocity.com app. Also the information added in the [public profile](https://github.com/settings/profile) in Github, can see in the home page of the travelocity.com app.
 
