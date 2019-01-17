@@ -180,6 +180,9 @@ You have now added and configured the service provider.
 2. Login with SAML from the WSO2 Identity Server.
 ![3](images/Travelocity.jpeg "Travelocity.jpeg")
 
+    If you checkout from tag v5.7.0 when you downloading the sample then login with SAML(Redirect binding).
+    ![4](images/travelocity5.7.0.png "Travelocity.png")
+
 3. Enter your Github credentials in the prompted login page of Github. Once you log in successfully you will be taken to the home page of the travelocity.com app. Also the information added in the [public profile](https://github.com/settings/profile) in Github, can see in the home page of the travelocity.com app.
 
 Also you can see, user is added in to the [application you created](https://github.com/settings/applications/) in the Github.
