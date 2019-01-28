@@ -56,6 +56,9 @@ Follow the steps given below to build the Salesforce EI Inbound Endpoint from th
 
 ## Deploying travelocity.com sample app
 
+To ensure you get the full understanding of configuring authenticator with WSO2 IS, the sample travelocity application is used in this use case. The samples run on the Apache Tomcat server and are written based on Servlet 3.0. Therefore, download Tomcat 7.x from [here](https://tomcat.apache.org/download-70.cgi).
+Install Apache Maven to build the samples. For more information, see [Installation Prerequisites](https://docs.wso2.com/display/IS570/Installation+Prerequisites).
+
 Follow the steps below to deploy the travelocity.com sample application:
 
 ### Download the samples
