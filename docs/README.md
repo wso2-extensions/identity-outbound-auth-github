@@ -152,6 +152,7 @@ You have now added the identity provider.
 ## Configuring the service provider
 
 The next step is to configure the service provider.
+Learn how to [Adding and Configuring a Service Provider](https://docs.wso2.com/display/IS570/Adding+and+Configuring+a+Service+Provider)
 
 1. Return to the management console.
 
