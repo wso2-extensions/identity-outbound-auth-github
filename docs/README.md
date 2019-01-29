@@ -39,7 +39,7 @@ Github Authenticator is supported by Identity Server 5.1.0 upwards.
 
 ## Building From the Source
 
-Follow the steps given below to build the Salesforce EI Inbound Endpoint from the source code:
+Follow the steps given below to build the Github authenticator from the source code:
 
 1. Get a clone or download the source from [Github](https://github.com/wso2-extensions/identity-outbound-auth-github).
 2. Run the following maven command from the `identity-outbound-auth-github` directory: `mvn clean install`.
