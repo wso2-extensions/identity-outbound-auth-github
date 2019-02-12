@@ -1,13 +1,10 @@
 # Github Authenticator
 
-The Github authenticator allows you to authenticate a user using Github through the WSO2 Identity Server. Github is a web-based hosting service for software development projects that facilitates powerful collaboration, code review, and code management for open source and private software development projects.
+The Github authenticator allows users to log in to your organization's applications using [Github](https://github.com/), which is a distributed version control and source code management service. The Github authenticator is configured as a federated authenticator in WSO2 Identity Server 5.1.0 and above. 
+
 ![1](images/github.png "github.png")
 
-This page provides instructions on how to configure the Github authenticator and Identity Server using a sample app. You can find more information in the following sections.
-
-```
-Github Authenticator is supported by Identity Server 5.1.0 upwards.
-```
+Let's explore the following topics to learn how to configure the Github authenticator and WSO2 Identity Server using a sample application. 
 
 * [Deploying Github artifacts](#Deploying-Github-artifacts)
 
