@@ -14,7 +14,7 @@ Let's explore the following topics to learn how to configure the Github authenti
 
 * [Configuring the identity provider](#Configuring-the-identity-provider)
 
-* [Configuring the service provider](Configuring the service provider)
+* [Configuring the service provider](#Configuring the service provider)
 
 * [Testing the sample](#Testing-the-sample)
 
@@ -26,30 +26,33 @@ Let's explore the following topics to learn how to configure the Github authenti
 | 1.0.1| 5.1.0, 5.2.0, 5.3.0, 5.4.1, 5.4.0, 5.5.0, 5.7.0    |
 
 ## Deploying Github artifacts
+You can either download the Github artifacts or build the authenticator from the source. You can also upgrade your older Github authenticators. 
 
-* Either Download the artifacts for this authenticator from [the store](https://store.wso2.com/store/assets/isconnector/details/bfed96a9-0d79-4770-9c55-22378d3a2812) or [build the project](Building From the Source) to get the jar and by adding it in the <IS-Home>/repository/components/dropins directory.
+1. To download the Github artifacts, visit the [Connector Store](https://store.wso2.com/store/assets/isconnector/details/bfed96a9-0d79-4770-9c55-22378d3a2812). 
+2. To build from the source, 
+    1. Stop the WSO2 Identity Server if it is already running.
+    2. To build the authenticator, navigate to the `identity-outbound-auth-github` directory and execute the following command in a command prompt.
+       ```
+       mvn clean install
+       ```
+       Note that the `org.wso2.carbon.identity.authenticator.github-x.x.x.jar` file gets created in the `identity-outbound-auth-github/component/target` directory.
+    3. Copy the `org.wso2.carbon.identity.authenticator.github-x.x.x.jar` file into the <IS-Home>/repository/components/dropins directory.
 
-* If you want to upgrade the Github Authenticator (.jar) in your existing IS pack, follow the bellow instructions.
-  * Stop WSO2 Identity Server if the server is already running.
-  * Download and extract the latest version of the connector artifacts (.jar, .war, gadgets etc.,) from the connector store.
-  * Replace the old .jar file found in the <IS_HOME>/repository/components/dropins folder with the new .jar file that you downloaded.
+3. To upgrade the Github Authenticator (.jar) in your existing WSO2 Identity Server pack,
+    1. Stop the WSO2 Identity Server if it is already running.
+    2. Download and extract the latest version of the connector artifacts from the [Connector Store](https://store.wso2.com/store/assets/isconnector/details/bfed96a9-0d79-4770-9c55-22378d3a2812).
+    3. Replace the old `.jar` file found in the `<IS_HOME>/repository/components/dropins` directory with the new `.jar` file that you downloaded. 
 
-## Building From the Source
+## Configuring the Github Application
 
-Follow the steps given below to build the Github authenticator from the source code:
-
-1. Get a clone or download the source from [Github](https://github.com/wso2-extensions/identity-outbound-auth-github).
-2. Run the following maven command from the `identity-outbound-auth-github` directory: `mvn clean install`.
-3. org.wso2.carbon.identity.authenticator.github-x.x.x.jar file is created in the `identity-outbound-auth-github/component/target` directory.
-
-## Configuring the Github App
-
-1. GO to [Github](https://www.github.com/) and create a github account.
-2. Register your app at [here](https://github.com/settings/applications/new).
+1. Visit [Github](https://www.github.com/) and create a github account.
+2. Register your application [here](https://github.com/settings/applications/new).
     ![2](images/registerGithubApp.png "registerGithubApp.png")
-3. Use https://localhost:9443/commonauth as the authorization callback URL when you register the client.
-4. Now you can get the clientId and clientSecret of your created app.
-![3](images/register.png "register.png")
+    ![images/Github_App_Registration.png]
+   > Use `https://localhost:9443/commonauth` as the *Authorization callback URL*.
+   Note that a `clientId` and `clientSecret` get created.
+     ![images/Github_App_ClientKeyandSecret.png]
+   ![3](images/register.png "register.png")
 
 ## Deploying travelocity.com sample app
 
