@@ -45,73 +45,74 @@ You can either download the Github artifacts or build the authenticator from the
 
 ## Configuring the Github Application
 
-1. Visit [Github](https://www.github.com/) and create a github account.
-2. Register your application [here](https://github.com/settings/applications/new).
-    ![2](images/registerGithubApp.png "registerGithubApp.png")
-    ![images/Github_App_Registration.png]
-   > Use `https://localhost:9443/commonauth` as the *Authorization callback URL*.
+Follow the steps below to configure an application in Github.
+1. Create a [Github account](https://www.github.com/).
+2. Register your application at [Github](https://github.com/settings/applications/new). Use `https://localhost:9443/commonauth` as the **Authorization callback URL**.
+   ![Application registration at Github](images/Github_App_Registration.png) 
    Note that a `clientId` and `clientSecret` get created.
-     ![images/Github_App_ClientKeyandSecret.png]
-   ![3](images/register.png "register.png")
+   ![Client Key and Client Secret of the registered application](images/Github_App_ClientKeyandSecret.png)
 
-## Deploying travelocity.com sample app
+## Deploying travelocity.com sample application
 
-To ensure you get the full understanding of configuring authenticator with WSO2 IS, the sample travelocity application is used in this use case. The samples run on the Apache Tomcat server and are written based on Servlet 3.0. Therefore, download Tomcat 7.x from [here](https://tomcat.apache.org/download-70.cgi).
-Install Apache Maven to build the samples. For more information, see [Installation Prerequisites](https://docs.wso2.com/display/IS570/Installation+Prerequisites).
+> Before you begin
+> * To ensure you get the full understanding of configuring the Github authenticator with WSO2 Identity Server, the sample travelocity application is used. As the sample applications run on the Apache Tomcat server and are written based on Servlet 3.0, download [Tomcat 7.x](https://tomcat.apache.org/download-70.cgi).
+> * Install Apache Maven to build the samples. For more information, see [Installation Prerequisites](https://docs.wso2.com/display/IS570/Installation+Prerequisites).
 
-Follow the steps below to deploy the travelocity.com sample application:
+Follow the steps below to deploy the travelocity.com sample application.
 
-### Download the samples
+### Downloading the samples
 
-To be able to deploy a sample of Identity Server, you need to download it onto your machine first. 
+Follow the steps below to download the WSO2 Identity Server sample from GitHub.
 
-Follow the instructions below to download a sample from GitHub.
-
-* Create a folder in your local machine and navigate to it using your command line.
-
-* Run the following commands.
-  ```
-  mkdir is-samples
-  cd is-samples/
-  git init
-  git remote add -f origin https://github.com/wso2/product-is.git
-  git config core.sparseCheckout true
-  ```
-  
-* Navigate into the .git/info/ directory and list out the folders/files you want to check out using the echo command below.
+1. Create a directory called `is-samples` in a preferred location your local machine. 
+   ```
+   mkdir is-samples
+   ```
+2. Navigate to the `is-samples` directory in a command prompt. 
+   ```
+   cd <SAMPLE_HOME>/is-samples/
+   ```
+3. Initialize the `is-samples` directory as a Git repository
+   ```    
+   git init
+   git remote add -f origin https://github.com/wso2/product-is.git
+   git config core.sparseCheckout true
+   ```
+4. Navigate into the `.git/info/` directory and list out the folders/files you want to check out by executing the echo command.
     ``` 
     cd .git
     cd info
     echo "modules/samples/" >> sparse-checkout
-    ```
-    
-* Navigate out of .git/info directory and checkout the v5.4.0 tag to update the empty repository with the remote one.
+    ```     
+5. Navigate out of the `.git/info` directory and checkout the `v5.4.0 tag` to update the empty repository with the remote one.
     ```
     cd ..
     cd ..
     git checkout -b v5.4.0 v5.4.0
     ```
-* Go to is-samples/modules/samples/sso/sso-agent-sample directory and run `mvn clean install` and get the war file from the target folder.
+6. Naviage to the `is-samples/modules/samples/sso/sso-agent-sample` directory.
+7. Build the sample application by executing the following command.
+   ```
+   mvn clean install
+   ```
+   Note that the `.war` files of the sample application get generated in the `target` folder.
 
-### Deploy the sample web app
+### Deploying the sample web application
 
-Deploy this sample web app on a web container.
+Follow the steps below to deploy the sample web application on a web container.
 
 1. Use the Apache Tomcat server to do this. If you have not downloaded Apache Tomcat already, download it from [here](https://tomcat.apache.org/download-70.cgi).
-
-2. Copy the .war file into the  webapps  folder. For example,  <TOMCAT_HOME>/apache-tomcat-<version>/webapps .
-
-3. Start the Tomcat server. 
-
-    To check the sample application, navigate to http://<TOMCAT_HOST>:<TOMCAT_PORT>/travelocity.com/index.jsp on your browser.
-    For example, `http://localhost:8080/travelocity.com/index.jsp.`
-    ```
-    Note: It is recommended that you use a hostname that is not localhost to avoid browser errors. Modify the /etc/hosts entry in your machine to reflect this. Note that localhost is used throughout thisdocumentation as an example, but you must modify this when configuring these authenticators or connectors with this sample application.
-    ```
+2. Copy the `.war` file into the `<TOMCAT_HOME>/apache-tomcat-<version>/webapps` directory.
+3. Start the Tomcat server.
+4. To check the sample application, navigate to `http://<TOMCAT_HOST>:<TOMCAT_PORT>/travelocity.com/index.jsp` on your browser.
+   > Example: `http://localhost:8080/travelocity.com/index.jsp.`
+   
+   > **NOTE**
+   > Even though localhost is used throughout this documentation, it is recommended to use a hostname that is not localhost to avoid browser errors. For this, modify the `/etc/hosts` entry in your machine. 
     
-Once this is done, the next step is to configure the WSO2 Identity Server by adding an identity provider and service provider.
+You have successfully deployed the sample web application. Next, configure the WSO2 Identity Server by adding an identity provider and service provider.
 
-## Configuring the identity provider
+## Configuring the Identity Provider
 
 Now you have to configure WSO2 Identity Server by [adding a new identity provider](https://docs.wso2.com/display/IS570/Adding+and+Configuring+an+Identity+Provider).
 
