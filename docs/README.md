@@ -114,88 +114,143 @@ You have successfully deployed the sample web application. Next, configure the W
 
 ## Configuring the Identity Provider
 
-Now you have to configure WSO2 Identity Server by [adding a new identity provider](https://docs.wso2.com/display/IS570/Adding+and+Configuring+an+Identity+Provider).
+An Identity Provider (IdP) is responsible for authenticating users and issuing identification information by using security tokens like SAML 2.0, OpenID Connect, OAuth 2.0 and WS-Trust.
 
-* Download the WSO2 Identity Server from [here](http://wso2.com/products/identity-server/).
+Follow the steps below to configure WSO2 Identity Server as an IdP that uses Github for federated authentication. 
 
-* Run the [WSO2 Identity Server](https://docs.wso2.com/display/IS570/Running+the+Product).
+> **Before you begin**
+> 1. [Download](http://wso2.com/products/identity-server/) WSO2 Identity Server.
+> 2. [Run](https://docs.wso2.com/display/IS570/Running+the+Product) WSO2 Identity Server.
 
-* Log in to the [management console](https://docs.wso2.com/display/IS570/Getting+Started+with+the+Management+Console) as an administrator.
+1. Access the WSO2 Identity Server [Management Console](https://docs.wso2.com/display/IS570/Getting+Started+with+the+Management+Console) as an administrator.
+2. Click **Add** on **Main > Identity > Identity Providers**.
 
-* In the `Identity Providers` section under the `Main` tab of the management console, click `Add`.
+   <img src="images/Add_Identity_Provider.png" alt="Identity Provider Add menu-item" width="250"/>
+3. Enter a suitable name the identity provider in the **Identity Provider Name** text box.
 
-* Give a suitable name for `Identity Provider Name`.
-![4](images/GithubIdentityProvider.png "GithubIdentityProvider.png")
+   <img src="images/Add_New_Identity_Provider.png" alt="Add Identity Provider screen" width="750"/>
+4. Click **Github Configuration** under **Federated Authenticators** and enter the required values as given below. 
 
-* Navigate to `Github Configuration` under `Federated Authenticators`. 
+   <img src="images/GithubIdentityProvider.png" alt="Add Identity Provider screen" width="750"/>
 
-* Enter the values as given in the above figure.
-   * Client Id: Client Id for your app.
-   * Client Secret: Client Secret for your app.
-   * Scope: Scope of the authorize token. For information on available scopes, see Scopes.
-   * Callback URL: Service Provider's URL where code needs to be sent .
-* Select both checkboxes to `Enable` the Github authenticator and make it the `Default`.
+    <table class="tg">
+      <tr>
+        <th class="tg-c3ow" align="center">Field</th>
+        <th class="tg-0pky" align="center">Description</th>
+        <th class="tg-0pky" align="center">Sample Value</th>
+      </tr>
+      <tr>
+        <td class="tg-0pky"><b>Enable</b></td>
+        <td class="tg-0pky"><br>Selecting this option enables Github to be used as an authenticator for users provisioned to WSO2 Identity Server.<br></td>
+        <td class="tg-0pky">Selected</td>
+      </tr>
+      <tr>
+        <td class="tg-0pky"><b>Default</b></td>
+        <td class="tg-0pky"><br>Selecting this option signifies that Github is used as the main/default form of authentication. Selecting this removes the selection made for any other Default checkboxes for other authenticators.</td>
+        <td class="tg-0pky">Selected</td>
+      </tr>
+      <tr>
+        <td class="tg-0pky"><b>Client Id</b></td>
+        <td class="tg-0pky">This is the <code>client key</code> of your Github application.</td>
+        <td class="tg-0pky"><code>8437ce9b8cfdf282c92b</code></td>
+      </tr>
+      <tr>
+        <td class="tg-0pky"><b>Client Secret</b></td>
+        <td class="tg-0pky">This is the <code>client secret</code> of your Github application.</td>
+        <td class="tg-0pky"><code>7219bb5e92f4287cb5134b73760e039e55d235d</code></td>
+      </tr>
+      <tr>
+        <td class="tg-0pky"><b>Scope</b></td>
+        <td class="tg-0pky">This defines the level of access you define for the authorization toke. For more information on scopes, see <a href="https://developer.github.com/apps/building-oauth-apps/scopes-for-oauth-apps/">Understanding scopes for OAuth Apps</a>.</td>
+        <td class="tg-0pky"></td>
+      </tr>
+      <tr>
+        <td class="tg-0pky"><b>Callback URL</b></td>
+        <td class="tg-0pky">This is the service provider's URL to which <code>authorization codes</code> are sent. Upon a successful authentication, the browser should be redirected to this URL. The URL should be specified in the following format: <code>https://<HOST_NAME>:<PORT>/acs</code></td>
+        <td class="tg-0pky"><code>https://localhost:9443/commonauth</code></td>
+      </tr>
+    </table>
+5. Click **Register**. 
 
-|   Property    |   Description    |   Sample value    |
-|   ---  |   --- |   ---    |
-|   Scope | Scope of the authorize token. For information on available scopes, see [Scopes](https://developer.github.com/apps/building-oauth-apps/understanding-scopes-for-oauth-apps/).    |   |
-|   Enable  |   Selecting this option enables github to be used as an authenticator for users provisioned to the Identity Server.   | Selected  |
-|   Default |   Selecting the Default checkbox signifies that github is the main/default form of authentication. This removes the selection made for any other Default checkboxes for other authenticators. |   Selected    |
-|   ClientID    |   This is the username from the github application    |   	8437ce9b8cfdf282c92b    |
-|   Client Secret   |   This is the password from the github application. Click the Show button to view the value you enter.    |   7219bb5e92f4287cb5134b73760e039e55d235d |
-|   Callback URL    |   This is the URL to which the browser should be redirected after the authentication is successful. The URL should be specified in the following format: https://<HOST_NAME>:<PORT>/acs   |   https://localhost:9443/commonauth   |
+You have now successfully added the identity provider. Remain on the Management Console. 
 
+## Configuring the Service Provider
 
-* Click `Register`.
+A Service Provider (SP) is an entity that provides Web services, e.g., web application. An SP  relies on a trusted IdP for authentication and authorization. In this case, WSO2 Identity Server acts as the IdP and does the task of authenticating and authorizing the user of the SP. 
 
-You have now added the identity provider.
+Follow the steps below to configure a Travelocity as the service provider. 
 
-## Configuring the service provider
+1. In the Management Console, click **Add** under **Main > Identity > Service Providers**.
 
-The next step is to configure the service provider.
-Learn how to [Adding and Configuring a Service Provider](https://docs.wso2.com/display/IS570/Adding+and+Configuring+a+Service+Provider)
+   <img src="images/Add_Service_Provider_Menu.png" alt="Service Provider Add menu-item" width="250"/> 
+2. Enter `travelocity` in the **Service Provider Name** text box and click **Register**.
 
-1. Return to the management console.
+   <img src="images/Add_New_Service_Provider_Screen.png" alt="Add Service Provider screen" width="750"/>
+3. In the **Inbound Authentication Configuration** section, click **SAML2 Web SSO Configuration > Configure**. 
 
-2. In the `Service Providers` section, click `Add` under the `Main` tab.
-
-3. Since you are using travelocity as the sample, enter travelocity.com in the `Service Provider Name` text box and click `Register` .
-
-4. In the `Inbound Authentication Configuration` section, click `Configure` under the `SAML2 Web SSO Configuration` section.
-
-5. Now set the configuration as follows:
-    1. Issuer: travelocity.com
-    2. Assertion Consumer URL: http://localhost:8080/travelocity.com/home.jsp
-    
-6. Select the following check-boxes:
-    1. Enable Response Signing.
-    2. Enable Single Logout. 
-    3. Enable Attribute Profile.
-    4. Include Attributes in the Response Always.
+   <img src="images/SAML2_Web_SSO_Config.png" alt="SAML2 Web SSO Configuration option" width="750"/> 
+4. Enter the configuration as follows.
+    <table class="tg">
+      <tr>
+        <th class="tg-c3ow" align="center">Field</th>
+        <th class="tg-0pky" align="center">Description</th>
+        <th class="tg-0pky" align="center">Sample Value</th>
+      </tr>
+      <tr>
+        <td class="tg-0pky"><b>Issuer</b></td>
+        <td class="tg-0pky"><br>This is the <code><saml:Issuer></code> element that contains the unique identifier of the service provider.<br></td>
+        <td class="tg-0pky"></code>travelocity.com</code></td>
+      </tr>
+      <tr>
+        <td class="tg-0pky"><b>Assertion Consumer</b></td>
+        <td class="tg-0pky"><br>This is the URL to which the browser should be redirected to after the authentication is successful.<br></td>
+        <td class="tg-0pky"></code>http://localhost:8080/travelocity.com/home.jsp</code></td>
+      </tr>
+      <tr>
+        <td class="tg-0pky"><b>Enable Response Signing</b></td>
+        <td class="tg-0pky"><br>Select this to sign the SAML2 responses that are returned after the authentication process.<br></td>
+        <td class="tg-0pky">Selected</td>
+      </tr>
+      <tr>
+        <td class="tg-0pky"><b>Enable Single Logout</b></td>
+        <td class="tg-0pky"><br>Select this so that all sessions are terminated once the user signs out from one server.<br></td>
+        <td class="tg-0pky">Selected</td>
+      </tr>
+      <tr>
+        <td class="tg-0pky"><b>Enable Attribute Profile</b></td>
+        <td class="tg-0pky"><br>The Identity Server provides support for a basic attribute profile where the identity provider can include the user’s attributes in the SAML Assertions as part of the attribute statement. Once you select the checkbox to <b>Include Attributes in the Response Always</b>, the identity provider always includes the attribute values related to the selected claims in the SAML attribute statement.<br></td>
+        <td class="tg-0pky">Selected</td>
+      </tr> 
+    </table>      
 
    ![5](images/Travelocity-Service-Provider.png "Travelocity-Service-Provider.png")
    
-7. Click `Update` to save the changes. Now you will be sent back to the `Service Providers` page.
+5. Click **`Update**.
+   Note that you will be redirected to the **Service Providers** screen. 
+6. Click **Local and Outbound Authentication Configuration**.
 
-8. Navigate to the Local and `Outbound Authentication Configuration` section.
- 
-9. Select the identity provider you created from the drop-down list under `Federated Authentication`.
-![6](images/GithubServiceProvider.png "GithubServiceProvider.png")
+   <img src="images/Local_And_Outbound_Authorization_Config.png" alt="Local and Outbound Authorization Configuration option" width="750"/> 
+7. Under **Federated Authentication**, select the identity provider you created from the drop-down.
 
-10. Ensure that the `Federated Authentication` radio button is selected and click  `Update` to save the changes. 
+   ![6](images/GithubServiceProvider.png "GithubServiceProvider.png") 
+   Ensure that the **Federated Authentication** radio button is selected 
+8. Click  **Update** to save the changes. 
 
-You have now added and configured the service provider.
+You have now successfully added and configured the service provider.
 
-## Testing the sample
+## Testing the Sample
 
-1. To test the sample, go to the following URL: http://<TOMCAT_HOST>:<TOMCAT_PORT>/travelocity.com/index.jsp. E.g., http://localhost:8080/travelocity.com
+Follow the steps below to test the sample application.
 
+1. Go to the following URL: `http://<TOMCAT_HOST>:<TOMCAT_PORT>/travelocity.com/index.jsp`, e.g., `http://localhost:8080/travelocity.com`. 
 2. Login with SAML from the WSO2 Identity Server.
-![7](images/Travelocity.jpeg "Travelocity.jpeg")
 
-    If you checkout from tag v5.7.0 when you downloading the sample then login with SAML(Redirect binding).
+   ![7](images/Travelocity.jpeg "Travelocity.jpeg")
+
+    > If you checkout from the tag v5.7.0 when you downloading the sample then login with SAML (Redirect binding).
     ![8](images/travelocity5.7.0.png "Travelocity.png")
 
-3. Enter your Github credentials in the prompted login page of Github. Once you log in successfully you will be taken to the home page of the travelocity.com app. Also the information added in the [public profile](https://github.com/settings/profile) in Github, can see in the home page of the travelocity.com app.
+3. Enter your Github credentials in the prompted login page of Github. 
+   Note that you are taken to the home page of the travelocity.com app. Also the information added in the [public profile](https://github.com/settings/profile) in Github, can see in the home page of the travelocity.com app.
 
-Also you can see, user is added in to the [application you created](https://github.com/settings/applications/) in the Github.
+   Note that you can see that a user is added in to the [application you created](https://github.com/settings/applications/) in the Github.
