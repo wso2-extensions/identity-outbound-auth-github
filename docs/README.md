@@ -48,7 +48,9 @@ You can either download the Github artifacts or build the authenticator from the
 Follow the steps below to configure an application in Github.
 1. Create a [Github account](https://www.github.com/).
 2. Register your application at [Github](https://github.com/settings/applications/new). Use `https://localhost:9443/commonauth` as the **Authorization callback URL**.
+
    ![Application registration at Github](images/Github_App_Registration.png) 
+   
    Note that a `clientId` and `clientSecret` get created.
    ![Client Key and Client Secret of the registered application](images/Github_App_ClientKeyandSecret.png)
 
