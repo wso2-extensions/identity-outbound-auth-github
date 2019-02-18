@@ -52,6 +52,7 @@ Follow the steps below to configure an application in Github.
    ![Application registration at Github](images/Github_App_Registration.png) 
    
    Note that a `clientId` and `clientSecret` get created.
+   
    ![Client Key and Client Secret of the registered application](images/Github_App_ClientKeyandSecret.png)
 
 ## Deploying travelocity.com sample application
