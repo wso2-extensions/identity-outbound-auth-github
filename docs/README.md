@@ -260,11 +260,11 @@ Follow the steps below to test the sample application.
 
     1. If you checked out from a tag prior to v5.7.0, select **Click here to login with SAML from WSO2 Identity Server**.
     
-       <img src="Travelocity.jpeg" alt="Travelocity home screen from a tag prior to v5.7.0" width="500"/>
+       <img src="images/Travelocity.jpeg" alt="Travelocity home screen from a tag prior to v5.7.0" width="500"/>
    
     2. If you checked out from the tag v5.7.0, select **Click here to login with SAML (Redirect biding) from WSO2 Identity Server*
     
-       <img src="Travelocity_Home_Screen.png" alt="Travelocity home screen from the tag v5.7.0" width="500"/>
+       <img src="images/Travelocity_Home_Screen.png" alt="Travelocity home screen from the tag v5.7.0" width="500"/>
 
 3. Enter your Github credentials in the prompted login page of Github.    
     
