@@ -236,7 +236,7 @@ Follow the steps below to configure Travelocity as the service provider.
       </tr> 
     </table>      
 
-   ![5](images/Add_Service_Provider.png "Registering travelocity as service provider") 
+   <img src="images/Add_Service_Provider.png" alt="Registering travelocity as service provider" /> 
    
 5. Click **Register**. 
    Note that you will be redirected to the **Service Providers** screen. 
@@ -245,7 +245,7 @@ Follow the steps below to configure Travelocity as the service provider.
    <img src="images/Local_And_Outbound_Authorization_Config.png" alt="Local and Outbound Authorization Configuration option" width="750"/> 
 7. Under **Federated Authentication**, select the identity provider you created from the drop-down.
 
-   ![6](images/GithubServiceProvider.png "GithubServiceProvider.png") 
+   <img src="images/GithubServiceProvider.png" alt="GithubServiceProvider.pn" /> 
    Ensure that the **Federated Authentication** radio button is selected 
 8. Click  **Update** to save the changes. 
 
@@ -259,30 +259,29 @@ Follow the steps below to test the sample application.
    Note that depending on the tag that you used to checkout sample, the travelocity home page would defer.  
 
     1. If you checked out from a tag prior to v5.7.0, select **Click here to login with SAML from WSO2 Identity Server**.
-
-       ![7](images/Travelocity.jpeg "Travelocity home screen from a tag prior to v5.7.0")
+    
+       <img src="Travelocity.jpeg" alt="Travelocity home screen from a tag prior to v5.7.0"/>
    
     2. If you checked out from the tag v5.7.0, select **Click here to login with SAML (Redirect biding) from WSO2 Identity Server*
     
-       ![8](images/Travelocity_Home_Screen.png "Travelocity home screen from the tag v5.7.0")
+       <img src="Travelocity_Home_Screen.png" alt="Travelocity home screen from the tag v5.7.0"/>
 
 3. Enter your Github credentials in the prompted login page of Github.    
     
-   ![9](images/Github_Sign_In.png "Travelocity.png")
+   <img src="images/Github_Sign_In.png" alt="Github sign in" width="250"/>
    
    In case you have already signed in to Github, you will be requsted to authorize access to Travelocity.  
    
-   ![10](images/Authorize_Travelocity.png "Travelocity.png")
+   <img src="images/Authorize_Travelocity.png" alt="Authorize travelocity" width="300"/>
    
-   Note that the Travelocity User Consent page with the [Github public profile](https://github.com/settings/profile) information appears.
-   
-   ![10](images/Travelocity_User_Consent.png "Travelocity user consent management")
+   Note that the Travelocity User Consent page with the [Github public profile](https://github.com/settings/profile) information appears.  
+   <img src="images/Travelocity_User_Consent.png" alt="Travelocity user consent management" width="300"/>
   
 4. Select the necessary attributes and click **Approve*.
-   Note that a successful login message appears in Travelocity. 
+   Note that a successful login message appears in Travelocity.   
+
+   <img src="images/Travelocity_Successful_Login.png" alt="Travelocity user consent management"/>
    
-   ![11](images/Travelocity_Successful_Login.png "Travelocity user consent management")
-   
-   Note that a new user is added in to the [Github application](https://github.com/settings/applications/) you created.
-   
-   ![12](images/New_User_in_Githupp_App.png "New user at the Github application")
+   Note that a new user is added in to the [Github application](https://github.com/settings/applications/) you created.   
+
+   <img src="images/New_User_in_Githupp_App.png" alt="New user at the Github application"/>
