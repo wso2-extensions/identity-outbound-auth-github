@@ -262,13 +262,15 @@ Follow the steps below to test the sample application.
     
        <img src="images/Travelocity.jpeg" alt="Travelocity home screen from a tag prior to v5.7.0" width="500"/>
    
-    2. If you checked out from the tag v5.7.0, select **Click here to login with SAML (Redirect biding) from WSO2 Identity Server*
+    2. If you checked out from the tag v5.7.0, select **Click here to login with SAML (Redirect biding) from WSO2 Identity Server**.
     
        <img src="images/Travelocity_Home_Screen.png" alt="Travelocity home screen from the tag v5.7.0" width="500"/>
 
 3. Enter your Github credentials in the prompted login page of Github.    
     
    <img src="images/Github_Sign_In.png" alt="Github sign in" width="250"/>
+   
+   > **NOTE** If you have not setup public profile information in your Github account, the claim details will appear as `null`.
    
    In case you have already signed in to Github, you will be requsted to authorize access to Travelocity.  
    
@@ -277,7 +279,7 @@ Follow the steps below to test the sample application.
    Note that the Travelocity User Consent page with the [Github public profile](https://github.com/settings/profile) information appears.  
    <img src="images/Travelocity_User_Consent.png" alt="Travelocity user consent management" width="300"/>
   
-4. Select the necessary attributes and click **Approve*.
+4. Select the necessary attributes and click **Approve**.
    Note that a successful login message appears in Travelocity.   
 
    <img src="images/Travelocity_Successful_Login.png" alt="Travelocity user consent management"/>
