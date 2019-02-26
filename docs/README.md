@@ -29,11 +29,12 @@ Let's explore the following topics to learn how to configure the Github authenti
 You can either download the Github artifacts or build the authenticator from the source. You can also upgrade your older Github authenticators. 
 
 1. To download the Github artifacts, 
-    1. Visit the [Connector Store](https://store.wso2.com/store/assets/isconnector/details/bfed96a9-0d79-4770-9c55-22378d3a2812) and download the artifacts.
-    2. Copy the `org.wso2.carbon.identity.authenticator.github-x.x.x.jar` file into the `<IS-Home>/repository/components/dropins` directory.
+    1. Stop WSO2 Identity Server if it is already running.
+    2. Visit the [Connector Store](https://store.wso2.com/store/assets/isconnector/details/bfed96a9-0d79-4770-9c55-22378d3a2812) and download the artifacts.
+    3. Copy the `org.wso2.carbon.identity.authenticator.github-x.x.x.jar` file into the `<IS-Home>/repository/components/dropins` directory.
     
 2. To build from the source, 
-    1. Stop the WSO2 Identity Server if it is already running.
+    1. Stop WSO2 Identity Server if it is already running.
     2. To build the authenticator, navigate to the `identity-outbound-auth-github` directory and execute the following command in a command prompt.
        ```
        mvn clean install
@@ -42,7 +43,7 @@ You can either download the Github artifacts or build the authenticator from the
     3. Copy the `org.wso2.carbon.identity.authenticator.github-x.x.x.jar` file into the `<IS-Home>/repository/components/dropins` directory.
 
 3. To upgrade the Github Authenticator (.jar) in your existing WSO2 Identity Server pack,
-    1. Stop the WSO2 Identity Server if it is already running.
+    1. Stop WSO2 Identity Server if it is already running.
     2. Download and extract the latest version of the connector artifacts from the [Connector Store](https://store.wso2.com/store/assets/isconnector/details/bfed96a9-0d79-4770-9c55-22378d3a2812).
     3. Replace the old `.jar` file in the `<IS_HOME>/repository/components/dropins` directory with the new `.jar` file that you downloaded. 
 
@@ -123,7 +124,7 @@ Follow the steps below to deploy the sample web application on a web container.
    > **NOTE**
    > Even though, `localhost` is used throughout this documentation, it is recommended to use a hostname that is not localhost to avoid browser errors. For this, modify the `/etc/hosts` entry in your machine. 
     
-You have successfully deployed the sample web application. Next, configure the WSO2 Identity Server by adding an identity provider and service provider.
+You have successfully deployed the sample web application. Next, configure WSO2 Identity Server by adding an identity provider and service provider.
 
 ## Configuring the Identity Provider
 
