@@ -270,8 +270,6 @@ Follow the steps below to test the sample application.
     
    <img src="images/Github_Sign_In.png" alt="Github sign in" width="250"/>
    
-   > **NOTE** If you have not setup public profile information in your Github account, the claim details will appear as `null`.
-   
    In case you have already signed in to Github, you will be requsted to authorize access to Travelocity.  
    
    <img src="images/Authorize_Travelocity.png" alt="Authorize travelocity" width="300"/>
@@ -283,6 +281,8 @@ Follow the steps below to test the sample application.
    Note that a successful login message appears in Travelocity.   
 
    <img src="images/Travelocity_Successful_Login.png" alt="Travelocity user consent management"/>
+   
+   > **Tip** If you have not setup public profile information in your Github account, the claim details will appear as `null`.
    
    Note that a new user is added in to the [Github application](https://github.com/settings/applications/) you created.   
 
