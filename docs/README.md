@@ -25,7 +25,7 @@ Let's explore the following topics to learn how to configure the Github authenti
 | 1.0.0| 5.1.0, 5.2.0, 5.3.0, 5.4.1, 5.4.0, 5.5.0, 5.7.0    |
 
 ## Deploying Github Artifacts
-You can either download the Github artifacts or build the authenticator from the source. You can also upgrade your older Github authenticators. 
+You can either download the Github artifacts or build the authenticator from the source. 
 
 1. To download the Github artifacts, 
     1. Stop WSO2 Identity Server if it is already running.
@@ -39,12 +39,7 @@ You can either download the Github artifacts or build the authenticator from the
        mvn clean install
        ```
        Note that the `org.wso2.carbon.identity.authenticator.github-x.x.x.jar` file gets created in the `identity-outbound-auth-github/component/target` directory.
-    3. Copy the `org.wso2.carbon.identity.authenticator.github-x.x.x.jar` file into the `<IS-Home>/repository/components/dropins` directory.
-
-3. To upgrade the Github Authenticator (.jar) in your existing WSO2 Identity Server pack,
-    1. Stop WSO2 Identity Server if it is already running.
-    2. Download and extract the latest version of the connector artifacts from the [Connector Store](https://store.wso2.com/store/assets/isconnector/details/bfed96a9-0d79-4770-9c55-22378d3a2812).
-    3. Replace the old `.jar` file in the `<IS_HOME>/repository/components/dropins` directory with the new `.jar` file that you downloaded. 
+    3. Copy the `org.wso2.carbon.identity.authenticator.github-x.x.x.jar` file into the `<IS-Home>/repository/components/dropins` directory. 
 
 ## Configuring the Github Application
 
