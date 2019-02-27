@@ -23,7 +23,6 @@ Let's explore the following topics to learn how to configure the Github authenti
 | version  | Supported WSO2 IS versions |
 | ------------- | ------------- |
 | 1.0.0| 5.1.0, 5.2.0, 5.3.0, 5.4.1, 5.4.0, 5.5.0, 5.7.0    |
-| 1.0.1| 5.1.0, 5.2.0, 5.3.0, 5.4.1, 5.4.0, 5.5.0, 5.7.0    |
 
 ## Deploying Github Artifacts
 You can either download the Github artifacts or build the authenticator from the source. You can also upgrade your older Github authenticators. 
