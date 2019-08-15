@@ -32,7 +32,7 @@ import java.util.Hashtable;
  */
 public class GithubAuthenticatorServiceComponent {
 
-    private static Log log = LogFactory.getLog(GithubAuthenticatorServiceComponent.class);
+    private static final Log log = LogFactory.getLog(GithubAuthenticatorServiceComponent.class);
 
     protected void activate(ComponentContext ctxt) {
         try {
