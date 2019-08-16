@@ -59,7 +59,7 @@ import java.util.Map;
  */
 public class GithubAuthenticator extends OpenIDConnectAuthenticator implements FederatedApplicationAuthenticator {
 
-    private static Log log = LogFactory.getLog(GithubAuthenticator.class);
+    private static final Log log = LogFactory.getLog(GithubAuthenticator.class);
 
     /**
      * Get Github authorization endpoint.
