@@ -120,6 +120,10 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
         return scope;
     }
 
+    @Override
+    protected String getQueryString(Map<String, String> authenticatorProperties) {
+        return authenticatorProperties.get(GithubAuthenticatorConstants.ADDITIONAL_QUERY_PARAMS);
+    }
 
     /**
      * Process the response of first call
@@ -224,11 +228,20 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
         scope.setDisplayOrder(3);
         configProperties.add(scope);
 
+        Property additionalQueryParams = new Property();
+        additionalQueryParams.setName(GithubAuthenticatorConstants.ADDITIONAL_QUERY_PARAMS);
+        additionalQueryParams.setDisplayName("Additional Query Parameters");
+        additionalQueryParams.setRequired(false);
+        additionalQueryParams.setValue("");
+        additionalQueryParams.setDescription("Additional query parameters. e.g: paramName1=value1");
+        additionalQueryParams.setDisplayOrder(4);
+        configProperties.add(additionalQueryParams);
+
         Property callbackUrl = new Property();
         callbackUrl.setDisplayName("Callback URL");
         callbackUrl.setName(IdentityApplicationConstants.OAuth2.CALLBACK_URL);
         callbackUrl.setDescription("Enter value corresponding to callback url.");
-        callbackUrl.setDisplayOrder(4);
+        callbackUrl.setDisplayOrder(5);
         configProperties.add(callbackUrl);
 
         return configProperties;
