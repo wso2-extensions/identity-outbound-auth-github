@@ -169,6 +169,13 @@ Follow the steps below to configure WSO2 Identity Server as an IdP that uses Git
         <td class="tg-0pky"><b>Scope</b></td>
         <td class="tg-0pky">This defines the level of access you define for the authorization toke. For more information on scopes, see <a href="https://developer.github.com/apps/building-oauth-apps/scopes-for-oauth-apps/">Understanding scopes for OAuth Apps</a>.</td>
         <td class="tg-0pky"></td>
+      </tr>      
+      <tr>
+        <td class="tg-0pky"><b>Additional Query Parameters</b></td>
+        <td class="tg-0pky">This is necessary if you are connecting to another Identity Server or application. Sometimes extra parameters are required by this IS or application so these can be specified here.
+        If you add <code>scope</code> param (eg: <code>scope=user repo</code>) into Additional Query 
+   Parameters, it will be considered only if the <code>Scope</code> property is empty.</td>
+        <td class="tg-0pky">paramName1=value1</td>
       </tr>
       <tr>
         <td class="tg-0pky"><b>Callback URL</b></td>
