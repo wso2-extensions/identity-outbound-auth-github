@@ -130,11 +130,11 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
                 queryString.toLowerCase().contains("scope=")) {
             String[] params = queryString.split("&");
             StringBuilder queryParamsExcludingScope = new StringBuilder();
-            Arrays.stream(params).forEach(param -> {
+            for (String param : params) {
                 if (!param.toLowerCase().contains("scope=")) {
                     queryParamsExcludingScope.append(param);
                 }
-            });
+            }
             queryString = queryParamsExcludingScope.toString();
         }
         return queryString;
