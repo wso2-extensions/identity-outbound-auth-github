@@ -51,6 +51,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -122,7 +123,21 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
 
     @Override
     protected String getQueryString(Map<String, String> authenticatorProperties) {
-        return authenticatorProperties.get(GithubAuthenticatorConstants.ADDITIONAL_QUERY_PARAMS);
+
+        String queryString = authenticatorProperties.get(GithubAuthenticatorConstants.ADDITIONAL_QUERY_PARAMS);
+        // Remove scope params if defined in additional query params, when scope param value is non-empty.
+        if (StringUtils.isNotEmpty(authenticatorProperties.get(GithubAuthenticatorConstants.SCOPE)) &&
+                queryString.toLowerCase().contains("scope=")) {
+            String[] params = queryString.split("&");
+            StringBuilder queryParamsExcludingScope = new StringBuilder();
+            Arrays.stream(params).forEach(param -> {
+                if (!param.toLowerCase().contains("scope=")) {
+                    queryParamsExcludingScope.append(param);
+                }
+            });
+            queryString = queryParamsExcludingScope.toString();
+        }
+        return queryString;
     }
 
     /**
