@@ -51,6 +51,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -120,6 +121,24 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
         return scope;
     }
 
+    @Override
+    protected String getQueryString(Map<String, String> authenticatorProperties) {
+
+        String queryString = authenticatorProperties.get(GithubAuthenticatorConstants.ADDITIONAL_QUERY_PARAMS);
+        // Remove scope params if defined in additional query params, when scope param value is non-empty.
+        if (StringUtils.isNotEmpty(authenticatorProperties.get(GithubAuthenticatorConstants.SCOPE)) &&
+                queryString.toLowerCase().contains("scope=")) {
+            String[] params = queryString.split("&");
+            StringBuilder queryParamsExcludingScope = new StringBuilder();
+            Arrays.stream(params).forEach(param -> {
+                if (!param.toLowerCase().contains("scope=")) {
+                    queryParamsExcludingScope.append(param);
+                }
+            });
+            queryString = queryParamsExcludingScope.toString();
+        }
+        return queryString;
+    }
 
     /**
      * Process the response of first call
@@ -224,11 +243,20 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
         scope.setDisplayOrder(3);
         configProperties.add(scope);
 
+        Property additionalQueryParams = new Property();
+        additionalQueryParams.setName(GithubAuthenticatorConstants.ADDITIONAL_QUERY_PARAMS);
+        additionalQueryParams.setDisplayName("Additional Query Parameters");
+        additionalQueryParams.setRequired(false);
+        additionalQueryParams.setValue("");
+        additionalQueryParams.setDescription("Additional query parameters. e.g: paramName1=value1");
+        additionalQueryParams.setDisplayOrder(4);
+        configProperties.add(additionalQueryParams);
+
         Property callbackUrl = new Property();
         callbackUrl.setDisplayName("Callback URL");
         callbackUrl.setName(IdentityApplicationConstants.OAuth2.CALLBACK_URL);
         callbackUrl.setDescription("Enter value corresponding to callback url.");
-        callbackUrl.setDisplayOrder(4);
+        callbackUrl.setDisplayOrder(5);
         configProperties.add(callbackUrl);
 
         return configProperties;
