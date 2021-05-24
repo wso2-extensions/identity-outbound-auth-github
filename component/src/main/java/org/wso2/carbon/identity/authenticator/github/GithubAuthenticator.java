@@ -31,6 +31,8 @@ import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
 import org.apache.oltu.oauth2.common.utils.JSONUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.wso2.carbon.identity.application.authentication.framework.FederatedApplicationAuthenticator;
 import org.wso2.carbon.identity.application.authentication.framework.context.AuthenticationContext;
 import org.wso2.carbon.identity.application.authentication.framework.exception.AuthenticationFailedException;
@@ -45,6 +47,7 @@ import org.wso2.carbon.identity.core.util.IdentityUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -54,6 +57,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static org.wso2.carbon.identity.authenticator.github.GithubAuthenticatorConstants.PRIMARY;
+import static org.wso2.carbon.identity.authenticator.github.GithubAuthenticatorConstants.USER_EMAIL;
+import static org.wso2.carbon.identity.authenticator.github.GithubAuthenticatorConstants.USER_EMAIL_SCOPE;
+import static org.wso2.carbon.identity.authenticator.github.GithubAuthenticatorConstants.USER_SCOPE;
 
 /**
  * Authenticator of Github
@@ -141,11 +149,23 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
     }
 
     /**
+     * Get whether GitHub primary email is used instead of public email.
+     *
+     * @param authenticatorProperties Properties of GitHub authenticator.
+     * @return Whether GitHub primary email is used instead of public email.
+     */
+    protected boolean getUsePrimaryEmail(Map<String, String> authenticatorProperties) {
+
+        return Boolean.parseBoolean(authenticatorProperties.get(GithubAuthenticatorConstants.USE_PRIMARY_EMAIL));
+    }
+
+    /**
      * Process the response of first call
      */
     @Override
     protected void processAuthenticationResponse(HttpServletRequest request, HttpServletResponse response,
                                                  AuthenticationContext context) throws AuthenticationFailedException {
+
         try {
             Map<String, String> authenticatorProperties = context.getAuthenticatorProperties();
             String clientId = authenticatorProperties.get(OIDCAuthenticatorConstants.CLIENT_ID);
@@ -178,6 +198,28 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
             authenticatedUserObj.setAuthenticatedSubjectIdentifier(JSONUtils.parseJSON(token)
                     .get(GithubAuthenticatorConstants.USER_ID).toString());
             claims = getSubjectAttributes(oAuthResponse, authenticatorProperties);
+
+            /*
+            If the user endpoint returns email as null but scope is set to `user` or `user:email` retrieve the
+            primary email from https://api.github.com/user/emails endpoint.
+            Need to do this because the user may not have set a public email/ enable Keep my email addresses private.
+             */
+            if (getUsePrimaryEmail(authenticatorProperties)) {
+                String scope = getScope(null, authenticatorProperties);
+                List<String> scopes = Arrays.asList(scope.split(" "));
+                if (scopes.contains(USER_SCOPE) || scopes.contains(USER_EMAIL_SCOPE)) {
+                    // Get primary email from https://api.github.com/user/emails endpoint.
+                    String primaryEmail =
+                            getPrimaryEmail(GithubAuthenticatorConstants.GITHUB_USER_EMAILS_ENDPOINT, accessToken);
+                    if (StringUtils.isNotEmpty(primaryEmail)) {
+                        for (Map.Entry<ClaimMapping, String> userAttribute : claims.entrySet()) {
+                            if (userAttribute.getKey().getRemoteClaim().getClaimUri().equals(USER_EMAIL)) {
+                                userAttribute.setValue(primaryEmail);
+                            }
+                        }
+                    }
+                }
+            }
             authenticatedUserObj.setUserAttributes(claims);
             context.setSubject(authenticatedUserObj);
         } catch (OAuthProblemException | IOException e) {
@@ -259,6 +301,16 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
         callbackUrl.setDisplayOrder(5);
         configProperties.add(callbackUrl);
 
+        Property usePrimaryEmail = new Property();
+        usePrimaryEmail.setName(GithubAuthenticatorConstants.USE_PRIMARY_EMAIL);
+        usePrimaryEmail.setDisplayName("Use Primary Email");
+        usePrimaryEmail.setRequired(false);
+        usePrimaryEmail.setValue("true");
+        usePrimaryEmail.setType("boolean");
+        usePrimaryEmail.setDescription("Specifies if primary email is used instead of public email.");
+        usePrimaryEmail.setDisplayOrder(6);
+        configProperties.add(usePrimaryEmail);
+
         return configProperties;
     }
 
@@ -296,6 +348,42 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
             log.debug("response: " + builder.toString());
         }
         return builder.toString();
+    }
+
+    private String getPrimaryEmail(String url, String accessToken) throws IOException {
+
+        String primaryEmail = null;
+        if (log.isDebugEnabled()) {
+            log.debug("Endpoint URL: " + url);
+        }
+
+        if (url == null) {
+            return StringUtils.EMPTY;
+        }
+        URL obj = new URL(url);
+        HttpURLConnection urlConnection = (HttpURLConnection) obj.openConnection();
+        urlConnection.setRequestMethod("GET");
+        urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+        StringBuilder builder = new StringBuilder();
+        String inputLine = reader.readLine();
+        while (inputLine != null) {
+            builder.append(inputLine).append("\n");
+            inputLine = reader.readLine();
+        }
+        reader.close();
+        if (log.isDebugEnabled() && IdentityUtil.isTokenLoggable(IdentityConstants.IdentityTokens.USER_ID_TOKEN)) {
+            log.debug("response: " + builder);
+        }
+        JSONArray emailList = new JSONArray(builder.toString());
+        for (int emailIndex = 0; emailIndex < emailList.length(); emailIndex++) {
+            JSONObject emailObject = emailList.getJSONObject(emailIndex);
+            if (Boolean.parseBoolean(emailObject.get(PRIMARY).toString())) {
+                primaryEmail = emailObject.get(USER_EMAIL).toString();
+                break;
+            }
+        }
+        return primaryEmail;
     }
 }
 
