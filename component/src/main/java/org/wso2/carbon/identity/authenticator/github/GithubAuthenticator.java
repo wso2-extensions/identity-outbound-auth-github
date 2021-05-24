@@ -354,14 +354,14 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
 
         String primaryEmail = null;
         if (log.isDebugEnabled()) {
-            log.debug("Endpoint URL: " + url);
+            log.debug("Access GitHub user emails endpoint using: " + url);
         }
 
         if (url == null) {
             return StringUtils.EMPTY;
         }
-        URL obj = new URL(url);
-        HttpURLConnection urlConnection = (HttpURLConnection) obj.openConnection();
+        URL userEmailsEndpoint = new URL(url);
+        HttpURLConnection urlConnection = (HttpURLConnection) userEmailsEndpoint.openConnection();
         urlConnection.setRequestMethod("GET");
         urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
         if (urlConnection.getResponseCode() != 200) {
@@ -376,7 +376,7 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
         }
         reader.close();
         if (log.isDebugEnabled() && IdentityUtil.isTokenLoggable(IdentityConstants.IdentityTokens.USER_ID_TOKEN)) {
-            log.debug("response: " + builder);
+            log.debug("GitHub user emails response: " + builder);
         }
         JSONArray emailList = new JSONArray(builder.toString());
         for (int emailIndex = 0; emailIndex < emailList.length(); emailIndex++) {
