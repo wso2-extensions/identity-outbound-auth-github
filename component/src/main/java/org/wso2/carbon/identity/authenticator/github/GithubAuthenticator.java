@@ -213,7 +213,7 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
                             getPrimaryEmail(GithubAuthenticatorConstants.GITHUB_USER_EMAILS_ENDPOINT, accessToken);
                     if (StringUtils.isNotEmpty(primaryEmail)) {
                         for (Map.Entry<ClaimMapping, String> userAttribute : claims.entrySet()) {
-                            if (userAttribute.getKey().getRemoteClaim().getClaimUri().equals(USER_EMAIL)) {
+                            if (USER_EMAIL.equals(userAttribute.getKey().getRemoteClaim().getClaimUri())) {
                                 userAttribute.setValue(primaryEmail);
                             }
                         }
@@ -364,7 +364,11 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
         HttpURLConnection urlConnection = (HttpURLConnection) userEmailsEndpoint.openConnection();
         urlConnection.setRequestMethod("GET");
         urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
+        int statusCode = urlConnection.getResponseCode();
         if (urlConnection.getResponseCode() != 200) {
+            if (log.isDebugEnabled()) {
+                log.debug("Failed to retrieve user emails. Status code: " + statusCode);
+            }
             return null;
         }
         BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));

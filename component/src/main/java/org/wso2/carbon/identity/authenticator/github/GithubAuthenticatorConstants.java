@@ -32,7 +32,7 @@ public class GithubAuthenticatorConstants {
     public static final String GITHUB_USER_EMAILS_ENDPOINT = "https://api.github.com/user/emails";
     public static final String SCOPE = "scope";
     public static final String USER_SCOPE= "user";
-    public static final String USER_EMAIL_SCOPE= "user:email";
+    public static final String USER_EMAIL_SCOPE = "user:email";
     public static final String ADDITIONAL_QUERY_PARAMS = "AdditionalQueryParameters";
     public static final String USE_PRIMARY_EMAIL = "UsePrimaryEmail";
     public static final String ACCEPT_HEADER = "Accept";
