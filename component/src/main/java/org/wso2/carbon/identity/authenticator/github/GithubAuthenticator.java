@@ -154,7 +154,7 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
      * @param authenticatorProperties Properties of GitHub authenticator.
      * @return Whether GitHub primary email is used instead of public email.
      */
-    protected boolean getUsePrimaryEmail(Map<String, String> authenticatorProperties) {
+    protected boolean isPrimaryEmailUsed(Map<String, String> authenticatorProperties) {
 
         return Boolean.parseBoolean(authenticatorProperties.get(GithubAuthenticatorConstants.USE_PRIMARY_EMAIL));
     }
@@ -204,7 +204,7 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
             primary email from https://api.github.com/user/emails endpoint.
             Need to do this because the user may not have set a public email/ enable Keep my email addresses private.
              */
-            if (getUsePrimaryEmail(authenticatorProperties)) {
+            if (isPrimaryEmailUsed(authenticatorProperties)) {
                 String scope = getScope(null, authenticatorProperties);
                 List<String> scopes = Arrays.asList(scope.split(" "));
                 if (scopes.contains(USER_SCOPE) || scopes.contains(USER_EMAIL_SCOPE)) {
@@ -364,10 +364,13 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
         HttpURLConnection urlConnection = (HttpURLConnection) obj.openConnection();
         urlConnection.setRequestMethod("GET");
         urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
+        if (urlConnection.getResponseCode() != 200) {
+            return null;
+        }
         BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
         StringBuilder builder = new StringBuilder();
         String inputLine = reader.readLine();
-        while (inputLine != null) {
+        while (StringUtils.isNotEmpty(inputLine)) {
             builder.append(inputLine).append("\n");
             inputLine = reader.readLine();
         }

@@ -28,7 +28,7 @@ public class GithubAuthenticatorConstants {
     public static final String GITHUB_TOKEN_ENDPOINT = "https://github.com/login/oauth/access_token";
     //Github user info endpoint URL
     public static final String GITHUB_USER_INFO_ENDPOINT = "https://api.github.com/user";
-    //Github user's email endpoint URL
+    // Github user's email endpoint URL.
     public static final String GITHUB_USER_EMAILS_ENDPOINT = "https://api.github.com/user/emails";
     public static final String SCOPE = "scope";
     public static final String USER_SCOPE= "user";
