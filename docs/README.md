@@ -185,11 +185,12 @@ Follow the steps below to configure WSO2 Identity Server as an IdP that uses Git
       <tr>
         <td class="tg-0pky"><b>Use Primary Email</b></td>
         <td class="tg-0pky">This defines whether to use user's primary email instead of public email of the profile.
-             <a>https://api.github.com/user</a> returns the user's public email. If <b>Public email</b> is not defined in the user profile
-             <a>https://github.com/settings/profile</a> or <b>Keep my email addresses private</b> is check in the email settings 
-             <a>https://github.com/settings/emails</a>, "null" is returned as email.
+             <code>https://api.github.com/user</code> returns the user's public email. If <b>Public email</b> is not defined in the
+            <a href="https://github.com/settings/profile">user profile</a> or <b>Keep my email addresses private</b> is check in the 
+            <a href="https://github.com/settings/emails">email settings</a>, <code>"null"</code> is returned as email.
              If you select this property and you have set scope as <b>user</b> or <b>user:email</b>,
-             the user's primary email will be taken from <a>https://api.github.com/user/emails</a> and use it as the email attribute.
+             the user's primary email will be taken from <code>https://api.github.com/user/emails</code> and use it as the email attribute.
+            By default, <b>Use Primary Email</b> value is set to <code>true</code>. If you want to switch to older behaviour, set the value to <code>false</code>.
         </td>
         <td class="tg-0pky">true</td>
       </tr>
