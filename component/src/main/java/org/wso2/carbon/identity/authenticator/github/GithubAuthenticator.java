@@ -45,9 +45,6 @@ import org.wso2.carbon.identity.application.common.util.IdentityApplicationConst
 import org.wso2.carbon.identity.base.IdentityConstants;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -58,13 +55,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import static org.wso2.carbon.identity.authenticator.github.GithubAuthenticatorConstants.PRIMARY;
 import static org.wso2.carbon.identity.authenticator.github.GithubAuthenticatorConstants.USER_EMAIL;
 import static org.wso2.carbon.identity.authenticator.github.GithubAuthenticatorConstants.USER_EMAIL_SCOPE;
 import static org.wso2.carbon.identity.authenticator.github.GithubAuthenticatorConstants.USER_SCOPE;
 
 /**
- * Authenticator of Github
+ * Authenticator of Github.
  */
 public class GithubAuthenticator extends OpenIDConnectAuthenticator implements FederatedApplicationAuthenticator {
 
@@ -75,6 +75,7 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
      */
     @Override
     protected String getAuthorizationServerEndpoint(Map<String, String> authenticatorProperties) {
+
         return GithubAuthenticatorConstants.GITHUB_OAUTH_ENDPOINT;
     }
 
@@ -83,6 +84,7 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
      */
     @Override
     protected String getTokenEndpoint(Map<String, String> authenticatorProperties) {
+
         return GithubAuthenticatorConstants.GITHUB_TOKEN_ENDPOINT;
     }
 
@@ -91,6 +93,7 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
      */
     @Override
     protected String getUserInfoEndpoint(OAuthClientResponse token, Map<String, String> authenticatorProperties) {
+
         return GithubAuthenticatorConstants.GITHUB_USER_INFO_ENDPOINT;
     }
 
@@ -99,29 +102,33 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
      */
     @Override
     protected boolean requiredIDToken(Map<String, String> authenticatorProperties) {
+
         return false;
     }
 
     /**
-     * Get the friendly name of the Authenticator
+     * Get the friendly name of the Authenticator.
      */
     @Override
     public String getFriendlyName() {
+
         return GithubAuthenticatorConstants.AUTHENTICATOR_FRIENDLY_NAME;
     }
 
     /**
-     * Get the name of the Authenticator
+     * Get the name of the Authenticator.
      */
     @Override
     public String getName() {
+
         return GithubAuthenticatorConstants.AUTHENTICATOR_NAME;
     }
 
     /**
-     * Get the scope
+     * Get the scope.
      */
     public String getScope(String scope, Map<String, String> authenticatorProperties) {
+
         scope = authenticatorProperties.get(GithubAuthenticatorConstants.SCOPE);
         if (StringUtils.isEmpty(scope)) {
             scope = GithubAuthenticatorConstants.USER_SCOPE;
@@ -160,7 +167,7 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
     }
 
     /**
-     * Process the response of first call
+     * Process the response of first call.
      */
     @Override
     protected void processAuthenticationResponse(HttpServletRequest request, HttpServletResponse response,
@@ -229,6 +236,7 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
 
     private OAuthClientResponse getOauthResponse(OAuthClient oAuthClient, OAuthClientRequest accessRequest)
             throws AuthenticationFailedException {
+
         OAuthClientResponse oAuthResponse;
         try {
             oAuthResponse = oAuthClient.accessToken(accessRequest);
@@ -240,6 +248,7 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
 
     private OAuthClientRequest getAccessRequest(String tokenEndPoint, String clientId, String code, String clientSecret,
                                                 String callbackurl) throws AuthenticationFailedException {
+
         OAuthClientRequest accessRequest;
         try {
             accessRequest = OAuthClientRequest.tokenLocation(tokenEndPoint)
@@ -253,12 +262,12 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
     }
 
     /**
-     * Get Configuration Properties
+     * Get Configuration Properties.
      */
     @Override
     public List<Property> getConfigurationProperties() {
 
-        List<Property> configProperties = new ArrayList<Property>();
+        List<Property> configProperties = new ArrayList<>();
 
         Property clientId = new Property();
         clientId.setName(OIDCAuthenticatorConstants.CLIENT_ID);
@@ -320,10 +329,11 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
      * @param url         User info endpoint.
      * @param accessToken Access token.
      * @return Response string.
-     * @throws IOException
+     * @throws IOException If an error occurred while sending the request.
      */
     protected String sendRequest(String url, String accessToken)
             throws IOException {
+
         if (log.isDebugEnabled()) {
             log.debug("Claim URL: " + url);
         }

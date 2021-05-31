@@ -30,9 +30,13 @@ import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This contains the Github auth client implementation.
+ */
 public class GithubOAuthClient extends OAuthClient {
 
     public GithubOAuthClient(HttpClient oauthClient) {
+
         super(oauthClient);
     }
 
@@ -41,7 +45,7 @@ public class GithubOAuthClient extends OAuthClient {
             OAuthClientRequest request, String requestMethod, Class<T> responseClass)
             throws OAuthSystemException, OAuthProblemException {
 
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put(GithubAuthenticatorConstants.ACCEPT_HEADER, OAuth.ContentType.JSON);
 
         return httpClient.execute(request, headers, requestMethod, responseClass);
