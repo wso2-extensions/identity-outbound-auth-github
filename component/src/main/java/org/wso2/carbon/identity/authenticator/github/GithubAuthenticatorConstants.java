@@ -19,19 +19,23 @@
 
 package org.wso2.carbon.identity.authenticator.github;
 
+/**
+ * This class contains the constants for the Github authenticator.
+ */
 public class GithubAuthenticatorConstants {
+
     public static final String AUTHENTICATOR_NAME = "GithubAuthenticator";
     public static final String AUTHENTICATOR_FRIENDLY_NAME = "Github";
-    //Github authorize endpoint URL
+    // Github authorize endpoint URL.
     public static final String GITHUB_OAUTH_ENDPOINT = "https://github.com/login/oauth/authorize";
-    //Github token  endpoint URL
+    // Github token  endpoint URL.
     public static final String GITHUB_TOKEN_ENDPOINT = "https://github.com/login/oauth/access_token";
-    //Github user info endpoint URL
+    // Github user info endpoint URL.
     public static final String GITHUB_USER_INFO_ENDPOINT = "https://api.github.com/user";
     // Github user's email endpoint URL.
     public static final String GITHUB_USER_EMAILS_ENDPOINT = "https://api.github.com/user/emails";
     public static final String SCOPE = "scope";
-    public static final String USER_SCOPE= "user";
+    public static final String USER_SCOPE = "user";
     public static final String USER_EMAIL_SCOPE = "user:email";
     public static final String ADDITIONAL_QUERY_PARAMS = "AdditionalQueryParameters";
     public static final String USE_PRIMARY_EMAIL = "UsePrimaryEmail";
