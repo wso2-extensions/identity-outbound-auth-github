@@ -143,7 +143,7 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
         String queryString = authenticatorProperties.get(GithubAuthenticatorConstants.ADDITIONAL_QUERY_PARAMS);
         // Remove scope params if defined in additional query params, when scope param value is non-empty.
         if (StringUtils.isNotEmpty(authenticatorProperties.get(GithubAuthenticatorConstants.SCOPE)) &&
-                queryString.toLowerCase().contains("scope=")) {
+                StringUtils.isNotEmpty(queryString) && queryString.toLowerCase().contains("scope=")) {
             String[] params = queryString.split("&");
             StringBuilder queryParamsExcludingScope = new StringBuilder();
             for (String param : params) {
