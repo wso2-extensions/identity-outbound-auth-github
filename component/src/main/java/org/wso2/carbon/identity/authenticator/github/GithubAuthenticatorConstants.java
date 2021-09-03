@@ -25,7 +25,7 @@ package org.wso2.carbon.identity.authenticator.github;
 public class GithubAuthenticatorConstants {
 
     public static final String AUTHENTICATOR_NAME = "GithubAuthenticator";
-    public static final String AUTHENTICATOR_FRIENDLY_NAME = "GitHub";
+    public static final String AUTHENTICATOR_FRIENDLY_NAME = "Github";
     // Github authorize endpoint URL.
     public static final String GITHUB_OAUTH_ENDPOINT = "https://github.com/login/oauth/authorize";
     // Github token  endpoint URL.
