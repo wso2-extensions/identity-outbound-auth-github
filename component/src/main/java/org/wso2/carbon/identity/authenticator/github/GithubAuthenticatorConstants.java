@@ -43,4 +43,20 @@ public class GithubAuthenticatorConstants {
     public static final String USER_ID = "id";
     public static final String USER_EMAIL = "email";
     public static final String PRIMARY = "primary";
+
+    /**
+     * Constants related to log management.
+     */
+    public static class LogConstants {
+
+        public static final String OUTBOUND_AUTH_GITHUB_SERVICE = "outbound-auth-github";
+
+        /**
+         * Define action IDs for diagnostic logs.
+         */
+        public static class ActionIDs {
+
+            public static final String PROCESS_AUTHENTICATION_RESPONSE = "process-outbound-auth-oidc-response";
+        }
+    }
 }

@@ -37,13 +37,17 @@ import org.wso2.carbon.identity.application.authentication.framework.FederatedAp
 import org.wso2.carbon.identity.application.authentication.framework.context.AuthenticationContext;
 import org.wso2.carbon.identity.application.authentication.framework.exception.AuthenticationFailedException;
 import org.wso2.carbon.identity.application.authentication.framework.model.AuthenticatedUser;
+import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkUtils;
 import org.wso2.carbon.identity.application.authenticator.oidc.OIDCAuthenticatorConstants;
 import org.wso2.carbon.identity.application.authenticator.oidc.OpenIDConnectAuthenticator;
 import org.wso2.carbon.identity.application.common.model.ClaimMapping;
 import org.wso2.carbon.identity.application.common.model.Property;
 import org.wso2.carbon.identity.application.common.util.IdentityApplicationConstants;
 import org.wso2.carbon.identity.base.IdentityConstants;
+import org.wso2.carbon.identity.central.log.mgt.utils.LogConstants;
+import org.wso2.carbon.identity.central.log.mgt.utils.LoggerUtils;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
+import org.wso2.carbon.utils.DiagnosticLog;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -52,12 +56,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static org.wso2.carbon.identity.authenticator.github.GithubAuthenticatorConstants.LogConstants.ActionIDs.PROCESS_AUTHENTICATION_RESPONSE;
+import static org.wso2.carbon.identity.authenticator.github.GithubAuthenticatorConstants.LogConstants.OUTBOUND_AUTH_GITHUB_SERVICE;
 import static org.wso2.carbon.identity.authenticator.github.GithubAuthenticatorConstants.PRIMARY;
 import static org.wso2.carbon.identity.authenticator.github.GithubAuthenticatorConstants.USER_EMAIL;
 import static org.wso2.carbon.identity.authenticator.github.GithubAuthenticatorConstants.USER_EMAIL_SCOPE;
@@ -173,6 +181,17 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
     protected void processAuthenticationResponse(HttpServletRequest request, HttpServletResponse response,
                                                  AuthenticationContext context) throws AuthenticationFailedException {
 
+        if (LoggerUtils.isDiagnosticLogsEnabled()) {
+            DiagnosticLog.DiagnosticLogBuilder diagnosticLogBuilder = new DiagnosticLog.DiagnosticLogBuilder(
+                    OUTBOUND_AUTH_GITHUB_SERVICE, PROCESS_AUTHENTICATION_RESPONSE);
+            diagnosticLogBuilder.resultMessage("Processing outbound GitHub authentication response.")
+                    .logDetailLevel(DiagnosticLog.LogDetailLevel.APPLICATION)
+                    .resultStatus(DiagnosticLog.ResultStatus.SUCCESS)
+                    .inputParam(LogConstants.InputKeys.STEP, context.getCurrentStep())
+                    .inputParam(LogConstants.InputKeys.IDP, context.getExternalIdP().getIdPName())
+                    .inputParams(getApplicationDetails(context));
+            LoggerUtils.triggerDiagnosticLogEvent(diagnosticLogBuilder);
+        }
         try {
             Map<String, String> authenticatorProperties = context.getAuthenticatorProperties();
             String clientId = authenticatorProperties.get(OIDCAuthenticatorConstants.CLIENT_ID);
@@ -197,6 +216,15 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
                 throw new AuthenticationFailedException("Access token is empty or null");
             }
 
+            DiagnosticLog.DiagnosticLogBuilder diagnosticLogBuilder = null;
+            if (LoggerUtils.isDiagnosticLogsEnabled()) {
+                diagnosticLogBuilder = new DiagnosticLog.DiagnosticLogBuilder(
+                        OUTBOUND_AUTH_GITHUB_SERVICE, PROCESS_AUTHENTICATION_RESPONSE);
+                diagnosticLogBuilder.inputParam(LogConstants.InputKeys.STEP, context.getCurrentStep())
+                        .inputParams(getApplicationDetails(context))
+                        .inputParam(LogConstants.InputKeys.IDP, context.getExternalIdP().getIdPName())
+                        .logDetailLevel(DiagnosticLog.LogDetailLevel.APPLICATION);
+            }
             AuthenticatedUser authenticatedUserObj;
             Map<ClaimMapping, String> claims;
             authenticatedUserObj = AuthenticatedUser
@@ -226,15 +254,27 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
                         }
                     }
                 }
+                if (LoggerUtils.isDiagnosticLogsEnabled() && diagnosticLogBuilder != null) {
+                    diagnosticLogBuilder.inputParam(LogConstants.InputKeys.SCOPE, scopes);
+                }
             }
             authenticatedUserObj.setUserAttributes(claims);
             context.setSubject(authenticatedUserObj);
+            if (LoggerUtils.isDiagnosticLogsEnabled() && diagnosticLogBuilder != null) {
+                diagnosticLogBuilder.resultMessage("Outbound GitHub authentication response processed successfully.")
+                        .resultStatus(DiagnosticLog.ResultStatus.SUCCESS);
+                if (context.getSubject().getUserAttributes() != null) {
+                    diagnosticLogBuilder.inputParam("user attributes (local claim : remote claim)",
+                            getUserAttributeClaimMappingList(context.getSubject()));
+                }
+                LoggerUtils.triggerDiagnosticLogEvent(diagnosticLogBuilder);
+            }
         } catch (OAuthProblemException | IOException e) {
             throw new AuthenticationFailedException("Authentication process failed", e);
         }
     }
 
-    private OAuthClientResponse getOauthResponse(OAuthClient oAuthClient, OAuthClientRequest accessRequest)
+    protected OAuthClientResponse getOauthResponse(OAuthClient oAuthClient, OAuthClientRequest accessRequest)
             throws AuthenticationFailedException {
 
         OAuthClientResponse oAuthResponse;
@@ -360,6 +400,12 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
         return builder.toString();
     }
 
+    @Override
+    protected String getComponentId() {
+
+        return OUTBOUND_AUTH_GITHUB_SERVICE;
+    }
+
     private String getPrimaryEmail(String url, String accessToken) throws IOException {
 
         String primaryEmail = null;
@@ -401,6 +447,33 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
             }
         }
         return primaryEmail;
+    }
+
+    /**
+     * Get application details from the authentication context.
+     * @param context Authentication context.
+     * @return Map of application details.
+     */
+    private Map<String, String> getApplicationDetails(AuthenticationContext context) {
+
+        Map<String, String> applicationDetailsMap = new HashMap<>();
+        FrameworkUtils.getApplicationResourceId(context).ifPresent(applicationId ->
+                applicationDetailsMap.put(LogConstants.InputKeys.APPLICATION_ID, applicationId));
+        FrameworkUtils.getApplicationName(context).ifPresent(applicationName ->
+                applicationDetailsMap.put(LogConstants.InputKeys.APPLICATION_NAME,
+                        applicationName));
+        return applicationDetailsMap;
+    }
+
+    private static List<String> getUserAttributeClaimMappingList(AuthenticatedUser authenticatedUser) {
+
+        return authenticatedUser.getUserAttributes().keySet().stream()
+                .map(claimMapping -> {
+                    String localClaim = claimMapping.getLocalClaim().getClaimUri();
+                    String remoteClaim = claimMapping.getRemoteClaim().getClaimUri();
+                    return localClaim + " : " + remoteClaim;
+                })
+                .collect(Collectors.toList());
     }
 }
 
