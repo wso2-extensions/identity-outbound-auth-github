@@ -263,7 +263,7 @@
     </distributionManagement>
     <properties>
         <carbon.identity.framework.version>5.25.260</carbon.identity.framework.version>
-        <carbon.identity.package.import.version.range>[5.25.260, 7.0.0)</carbon.identity.package.import.version.range>
+        <carbon.identity.package.import.version.range>[5.25.260, 8.0.0)</carbon.identity.package.import.version.range>
         <identity.outbound.auth.oidc.import.version.range>[5.11.18, 6.0.0)</identity.outbound.auth.oidc.import.version.range>
         <commons-logging.version>4.4.3</commons-logging.version>
         <carbon.kernel.version>4.9.10</carbon.kernel.version>
