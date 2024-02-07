@@ -77,6 +77,8 @@
                             version="${carbon.identity.package.import.version.range}",
                             org.wso2.carbon.identity.core.util;
                             version="${carbon.identity.package.import.version.range}",
+                            org.wso2.carbon.identity.central.log.mgt.utils;
+                            version="${carbon.identity.package.import.version.range}",
                             javax.servlet,
                             javax.servlet.http,
                             org.apache.oltu.oauth2.*; version="${oltu.package.import.version.range}",
