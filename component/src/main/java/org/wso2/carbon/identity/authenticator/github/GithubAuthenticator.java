@@ -197,7 +197,7 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
             String clientId = authenticatorProperties.get(OIDCAuthenticatorConstants.CLIENT_ID);
             String clientSecret = authenticatorProperties.get(OIDCAuthenticatorConstants.CLIENT_SECRET);
             String tokenEndPoint = getTokenEndpoint(authenticatorProperties);
-            String callbackUrl = getCallbackUrl(authenticatorProperties);
+            String callbackUrl = getCallbackUrl(authenticatorProperties, context);
 
             OAuthAuthzResponse authorizationResponse = OAuthAuthzResponse.oauthCodeAuthzResponse(request);
             String code = authorizationResponse.getCode();
@@ -454,7 +454,7 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
      * @param context Authentication context.
      * @return Map of application details.
      */
-    private Map<String, String> getApplicationDetails(AuthenticationContext context) {
+    protected Map<String, String> getApplicationDetails(AuthenticationContext context) {
 
         Map<String, String> applicationDetailsMap = new HashMap<>();
         FrameworkUtils.getApplicationResourceId(context).ifPresent(applicationId ->
