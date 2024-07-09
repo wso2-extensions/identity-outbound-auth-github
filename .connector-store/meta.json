@@ -1,0 +1,18 @@
+{
+    "name": "Github",
+    "owner": "WSO2",
+    "category": "Federated authenticator",
+    "documentationUrl": "https://github.com/wso2-extensions/identity-outbound-auth-github/tree/master/docs",
+    "description": "The Github authenticator allows you to authenticate a user using Github through the WSO2 Identity Server. Github is a web-based hosting service for software development projects that facilitates powerful collaboration, code review, and code management for open source and private software development projects.",
+    "status": "Active",
+    "labels": ["SocialLogin"],
+    "releases": [
+        {
+            "tagName": "1.0.4",
+            "products": [
+                "IS 6.0.0",
+                "IS 5.11.0"
+            ]
+        }
+    ]
+}
