@@ -245,7 +245,8 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
                 if (scopes.contains(USER_SCOPE) || scopes.contains(USER_EMAIL_SCOPE)) {
                     // Get primary email from https://api.github.com/user/emails endpoint.
                     String primaryEmail =
-                            getPrimaryEmail(GithubAuthenticatorConstants.GITHUB_USER_EMAILS_ENDPOINT, accessToken);
+                            GithubExecutorUtil.getPrimaryEmail(GithubAuthenticatorConstants.GITHUB_USER_EMAILS_ENDPOINT,
+                                                               accessToken);
                     if (StringUtils.isNotEmpty(primaryEmail)) {
                         for (Map.Entry<ClaimMapping, String> userAttribute : claims.entrySet()) {
                             if (USER_EMAIL.equals(userAttribute.getKey().getRemoteClaim().getClaimUri())) {
@@ -406,48 +407,6 @@ public class GithubAuthenticator extends OpenIDConnectAuthenticator implements F
         return OUTBOUND_AUTH_GITHUB_SERVICE;
     }
 
-    private String getPrimaryEmail(String url, String accessToken) throws IOException {
-
-        String primaryEmail = null;
-        if (log.isDebugEnabled()) {
-            log.debug("Access GitHub user emails endpoint using: " + url);
-        }
-
-        if (url == null) {
-            return StringUtils.EMPTY;
-        }
-        URL userEmailsEndpoint = new URL(url);
-        HttpURLConnection urlConnection = (HttpURLConnection) userEmailsEndpoint.openConnection();
-        urlConnection.setRequestMethod("GET");
-        urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
-        int statusCode = urlConnection.getResponseCode();
-        if (urlConnection.getResponseCode() != 200) {
-            if (log.isDebugEnabled()) {
-                log.debug("Failed to retrieve user emails. Status code: " + statusCode);
-            }
-            return null;
-        }
-        BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-        StringBuilder builder = new StringBuilder();
-        String inputLine = reader.readLine();
-        while (StringUtils.isNotEmpty(inputLine)) {
-            builder.append(inputLine).append("\n");
-            inputLine = reader.readLine();
-        }
-        reader.close();
-        if (log.isDebugEnabled() && IdentityUtil.isTokenLoggable(IdentityConstants.IdentityTokens.USER_ID_TOKEN)) {
-            log.debug("GitHub user emails response: " + builder);
-        }
-        JSONArray emailList = new JSONArray(builder.toString());
-        for (int emailIndex = 0; emailIndex < emailList.length(); emailIndex++) {
-            JSONObject emailObject = emailList.getJSONObject(emailIndex);
-            if (Boolean.parseBoolean(emailObject.get(PRIMARY).toString())) {
-                primaryEmail = emailObject.get(USER_EMAIL).toString();
-                break;
-            }
-        }
-        return primaryEmail;
-    }
 
     /**
      * Get application details from the authentication context.
