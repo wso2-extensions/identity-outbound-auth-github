@@ -81,7 +81,7 @@
                             javax.servlet,
                             javax.servlet.http,
                             org.apache.oltu.oauth2.*; version="${oltu.package.import.version.range}",
-                            org.wso2.carbon.identity.user.registration.engine.graph;
+                            org.wso2.carbon.identity.flow.execution.engine.*;
                             version="${carbon.identity.package.import.version.range}",
                             *;resolution:=optional
                         </Import-Package>

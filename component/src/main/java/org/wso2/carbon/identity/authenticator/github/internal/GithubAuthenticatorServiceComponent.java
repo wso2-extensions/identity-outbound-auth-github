@@ -27,7 +27,7 @@ import org.wso2.carbon.identity.authenticator.github.GithubAuthenticator;
 
 import java.util.Hashtable;
 import org.wso2.carbon.identity.authenticator.github.GithubExecutor;
-import org.wso2.carbon.identity.user.registration.engine.graph.Executor;
+import org.wso2.carbon.identity.flow.execution.engine.graph.Executor;
 
 /**
  * @scr.component name="identity.application.authenticator.Github.component" immediate="true"

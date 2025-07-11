@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.oltu.oauth2.client.OAuthClient;
 import org.apache.oltu.oauth2.client.URLConnectionClient;
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
 import org.apache.oltu.oauth2.client.response.OAuthClientResponse;
@@ -35,13 +34,8 @@ import org.wso2.carbon.identity.application.authenticator.oidc.OIDCAuthenticator
 import org.wso2.carbon.identity.application.authenticator.oidc.OpenIDConnectExecutor;
 import org.wso2.carbon.identity.application.authenticator.oidc.util.OIDCCommonUtil;
 import org.wso2.carbon.identity.application.common.model.ClaimMapping;
-import org.wso2.carbon.identity.central.log.mgt.utils.LogConstants;
-import org.wso2.carbon.identity.central.log.mgt.utils.LoggerUtils;
-import org.wso2.carbon.identity.user.registration.engine.exception.RegistrationEngineException;
-import org.wso2.carbon.identity.user.registration.engine.model.ExecutorResponse;
-import org.wso2.carbon.identity.user.registration.engine.model.RegistrationContext;
-import static org.wso2.carbon.identity.application.authenticator.oidc.OIDCAuthenticatorConstants.LogConstants.ActionIDs.INVOKE_TOKEN_ENDPOINT;
-import static org.wso2.carbon.identity.application.authenticator.oidc.OIDCAuthenticatorConstants.LogConstants.OUTBOUND_AUTH_OIDC_SERVICE;
+import org.wso2.carbon.identity.flow.execution.engine.exception.FlowEngineException;
+import org.wso2.carbon.identity.flow.execution.engine.model.FlowExecutionContext;
 import static org.wso2.carbon.identity.authenticator.github.GithubAuthenticatorConstants.LogConstants.OUTBOUND_AUTH_GITHUB_SERVICE;
 import static org.wso2.carbon.identity.authenticator.github.GithubAuthenticatorConstants.USER_EMAIL;
 import static org.wso2.carbon.identity.authenticator.github.GithubAuthenticatorConstants.USER_EMAIL_SCOPE;
@@ -97,8 +91,8 @@ public class GithubExecutor extends OpenIDConnectExecutor {
     }
 
     @Override
-    protected OAuthClientResponse requestAccessToken(RegistrationContext context, String code)
-            throws RegistrationEngineException {
+    protected OAuthClientResponse requestAccessToken(FlowExecutionContext context, String code)
+            throws FlowEngineException {
 
         OAuthClientRequest accessTokenRequest = getAccessTokenRequest(context.getAuthenticatorProperties(), code,
                                                                       context.getCallbackUrl());
@@ -108,12 +102,12 @@ public class GithubExecutor extends OpenIDConnectExecutor {
         try {
             return githubOAuthClient.accessToken(accessTokenRequest);
         } catch (OAuthSystemException | OAuthProblemException e) {
-            throw handleRegistrationServerException("Error while getting the access token.", e);
+            throw handleFlowEngineServerException("Error while getting the access token.", e);
         }
     }
 
-    public Map<String, Object> resolveUserAttributes(RegistrationContext context, String code)
-            throws RegistrationEngineException {
+    public Map<String, Object> resolveUserAttributes(FlowExecutionContext context, String code)
+            throws FlowEngineException {
 
         OAuthClientResponse oAuthResponse = requestAccessToken(context, code);
         String accessToken = resolveAccessToken(oAuthResponse);
@@ -161,7 +155,7 @@ public class GithubExecutor extends OpenIDConnectExecutor {
                 } catch (IOException e) {
                     logDiagnostic("Failed to retrieve primary email from Github.", FAILED,
                                   "invoke-github-endpoint", loggerInputs);
-                    throw handleRegistrationServerException("Error while retrieving primary email from GitHub.", e);
+                    throw handleFlowEngineServerException("Error while retrieving primary email from GitHub.", e);
                 }
             }
         }
@@ -175,7 +169,7 @@ public class GithubExecutor extends OpenIDConnectExecutor {
     }
 
     @Override
-    public String getAuthenticateUser(Map<String, Object> jsonObject) {
+    public String getAuthenticatedUserIdentifier(Map<String, Object> jsonObject) {
 
         return (String) jsonObject.get(GithubAuthenticatorConstants.USER_ID);
     }
