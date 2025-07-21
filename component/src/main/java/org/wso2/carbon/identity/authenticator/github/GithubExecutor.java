@@ -106,7 +106,8 @@ public class GithubExecutor extends OpenIDConnectExecutor {
         }
     }
 
-    public Map<String, Object> resolveUserAttributes(FlowExecutionContext context, String code)
+    @Override
+    protected Map<String, Object> resolveUserAttributes(FlowExecutionContext context, String code)
             throws FlowEngineException {
 
         OAuthClientResponse oAuthResponse = requestAccessToken(context, code);
@@ -121,9 +122,6 @@ public class GithubExecutor extends OpenIDConnectExecutor {
 
         String attributeSeparator = getMultiAttributeSeparator(context.getTenantDomain());
 
-        jwtAttributeMap.entrySet().stream()
-                .filter(entry -> !ArrayUtils.contains(NON_USER_ATTRIBUTES, entry.getKey()))
-                .forEach(entry -> OIDCCommonUtil.buildClaimMappings(remoteClaimsMap, entry, attributeSeparator));
         /*
         If the user endpoint returns email as null but scope is set to `user` or `user:email` retrieve the primary
         email from https://api.github.com/user/emails endpoint.
@@ -159,6 +157,10 @@ public class GithubExecutor extends OpenIDConnectExecutor {
                 }
             }
         }
+
+        jwtAttributeMap.entrySet().stream()
+                .filter(entry -> !ArrayUtils.contains(NON_USER_ATTRIBUTES, entry.getKey()))
+                .forEach(entry -> OIDCCommonUtil.buildClaimMappings(remoteClaimsMap, entry, attributeSeparator));
         return resolveLocalClaims(context, remoteClaimsMap, jwtAttributeMap);
     }
 
