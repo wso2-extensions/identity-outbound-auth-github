@@ -26,6 +26,8 @@ import org.wso2.carbon.identity.application.authentication.framework.Application
 import org.wso2.carbon.identity.authenticator.github.GithubAuthenticator;
 
 import java.util.Hashtable;
+import org.wso2.carbon.identity.authenticator.github.GithubExecutor;
+import org.wso2.carbon.identity.flow.execution.engine.graph.Executor;
 
 /**
  * @scr.component name="identity.application.authenticator.Github.component" immediate="true"
@@ -40,6 +42,7 @@ public class GithubAuthenticatorServiceComponent {
             Hashtable<String, String> props = new Hashtable<String, String>();
             ctxt.getBundleContext().registerService(ApplicationAuthenticator.class.getName(),
                     authenticator, props);
+            ctxt.getBundleContext().registerService(Executor.class.getName(), GithubExecutor.getInstance(), null);
             if (log.isDebugEnabled()) {
                 log.debug("Github authenticator is activated");
             }
