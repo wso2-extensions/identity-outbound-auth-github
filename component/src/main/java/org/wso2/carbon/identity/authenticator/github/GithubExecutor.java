@@ -63,6 +63,12 @@ public class GithubExecutor extends OpenIDConnectExecutor {
     }
 
     @Override
+    public String getAMRValue() {
+
+        return GithubAuthenticatorConstants.AUTHENTICATOR_NAME;
+    }
+
+    @Override
     public String getAuthorizationServerEndpoint(Map<String, String> authenticatorProperties) {
 
         return GithubAuthenticatorConstants.GITHUB_OAUTH_ENDPOINT;
